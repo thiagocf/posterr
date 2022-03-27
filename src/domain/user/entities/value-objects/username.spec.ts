@@ -20,10 +20,8 @@ describe('user username', () => {
 
   it('should throw invalid length exception when username has length greater than 14', () => {
     const USERNAME = 'justALargetestUserName';
-    try {
-      new Username(USERNAME);
-    } catch (e) {
-      expect(e).toBeInstanceOf(InvalidUsernameLengthException);
-    }
+    expect(() => new Username(USERNAME)).toThrow(
+      InvalidUsernameLengthException,
+    );
   });
 });
