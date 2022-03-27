@@ -1,14 +1,9 @@
 import { ID } from 'src/domain/base/value-objects/id';
-import { EmptyPostMessageException } from '../exceptions/empty-post-message.exception';
-import { ReferencedPostNotFoundException } from '../exceptions/referenced-post-not-found.exception';
-import { RepostARepostNotAllowedException } from '../exceptions/repost-a-respost-not-allowed.exception';
+import { PostType } from './post-type';
+import { NormalValidatorStrategy } from './validator-strategies/normal-validator-strategy';
+import { QuoteValidatorStrategy } from './validator-strategies/quote-validator-strategy';
+import { RepostValidatorStrategy } from './validator-strategies/repost-validator-strategy';
 import { Message } from './value-objects/message';
-
-export enum PostType {
-  NORMAL,
-  REPOST,
-  QUOTE,
-}
 
 type PostEntityProps = {
   id?: string;
@@ -21,9 +16,14 @@ export type ReferencedPost = {
   id: ID;
   message: Message;
   type: PostType;
-  referencedPostId: ID;
+  referencedPostId?: ID;
 };
 
+const ValidatorStrategyMap = {
+  [PostType.NORMAL]: NormalValidatorStrategy,
+  [PostType.QUOTE]: QuoteValidatorStrategy,
+  [PostType.REPOST]: RepostValidatorStrategy,
+};
 export class PostEntity {
   private readonly _id: ID;
   private readonly _message: Message;
@@ -36,7 +36,8 @@ export class PostEntity {
     this._type = props.type;
     this._referencedPost = props.referencedPost;
 
-    this.validate();
+    const validator = new ValidatorStrategyMap[props.type]();
+    validator.validate(props.referencedPost, this.message);
   }
 
   get id() {
@@ -53,28 +54,5 @@ export class PostEntity {
 
   get referencedPost() {
     return this._referencedPost;
-  }
-
-  private validate() {
-    if (
-      [PostType.QUOTE, PostType.REPOST].includes(this._type) &&
-      !this._referencedPost
-    ) {
-      throw new ReferencedPostNotFoundException();
-    }
-
-    if (
-      [PostType.NORMAL, PostType.QUOTE].includes(this._type) &&
-      this._message.value === ''
-    ) {
-      throw new EmptyPostMessageException();
-    }
-
-    if (
-      this._type === PostType.REPOST &&
-      this._referencedPost.type === PostType.REPOST
-    ) {
-      throw new RepostARepostNotAllowedException();
-    }
   }
 }
