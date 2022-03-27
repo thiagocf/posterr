@@ -1,5 +1,5 @@
-import { InvalidUsernameCharacterException } from '../exceptions/invalid-username-character.exception copy';
-import { InvalidUsernameLengthException } from '../exceptions/invalid-username-length.exception';
+import { InvalidUsernameCharacterException } from '../../exceptions/invalid-username-character.exception';
+import { InvalidUsernameLengthException } from '../../exceptions/invalid-username-length.exception';
 import { Username } from './username';
 
 describe('user username', () => {

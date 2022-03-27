@@ -1,6 +1,6 @@
 import { ValueObject } from 'src/domain/base/value-object';
-import { InvalidUsernameCharacterException } from '../exceptions/invalid-username-character.exception copy';
-import { InvalidUsernameLengthException } from '../exceptions/invalid-username-length.exception';
+import { InvalidUsernameCharacterException } from '../../exceptions/invalid-username-character.exception';
+import { InvalidUsernameLengthException } from '../../exceptions/invalid-username-length.exception';
 
 const MAX_USERNAME_SIZE = 14;
 
