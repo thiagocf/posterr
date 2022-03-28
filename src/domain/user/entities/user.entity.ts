@@ -1,10 +1,10 @@
 import { ID } from 'src/domain/base/value-objects/id';
 import { Username } from './value-objects/username';
 
-type UserEntityProps = {
+export type UserEntityProps = {
   id?: string;
   username: string;
-  createdAt: Date;
+  createdAt?: Date;
   followersCount?: number;
   followingCount?: number;
   postsCount?: number;
@@ -24,7 +24,7 @@ export class UserEntity {
     this._followersCount = props.followersCount || 0;
     this._followingCount = props.followingCount || 0;
     this._postsCount = props.postsCount || 0;
-    this._createdAt = props?.createdAt || new Date();
+    this._createdAt = props.createdAt || new Date();
   }
 
   get username() {
