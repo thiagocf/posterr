@@ -10,6 +10,7 @@ type PostEntityProps = {
   message?: string;
   type: PostType;
   authorId: string;
+  createdAt?: Date;
   referencedPost?: ReferencedPost;
 };
 
@@ -18,6 +19,7 @@ export type ReferencedPost = {
   message: Message;
   type: PostType;
   authorId: ID;
+  createdAt: Date;
   referencedPostId?: ID;
 };
 
@@ -31,6 +33,7 @@ export class PostEntity {
   private readonly _message: Message;
   private readonly _type: PostType;
   private readonly _authorId: ID;
+  private readonly _createdAt: Date;
   private readonly _referencedPost: ReferencedPost;
 
   constructor(props: PostEntityProps) {
@@ -39,6 +42,7 @@ export class PostEntity {
     this._type = props.type;
     this._authorId = new ID(props.authorId);
     this._referencedPost = props.referencedPost;
+    this._createdAt = props?.createdAt || new Date();
 
     const validator = new ValidatorStrategyMap[props.type]();
     validator.validate(props.referencedPost, this.message);
@@ -62,5 +66,9 @@ export class PostEntity {
 
   get referencedPost(): ReferencedPost {
     return this._referencedPost;
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
   }
 }

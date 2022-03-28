@@ -32,6 +32,7 @@ describe('post entity', () => {
     expect(sut.message).toBe(props.message);
     expect(sut.type).toBe(props.type);
     expect(sut.authorId).toBe(props.authorId);
+    expect(sut.createdAt).toBeDefined();
     expect(normalValidateSpy).toBeCalledTimes(1);
     expect(normalValidateSpy).toBeCalledWith(undefined, props.message);
   });
@@ -41,6 +42,7 @@ describe('post entity', () => {
       id: new ID('123'),
       message: new Message('Referenced post message.'),
       type: PostType.NORMAL,
+      createdAt: new Date(),
       authorId: new ID('abc'),
     };
     const props = {
@@ -56,6 +58,7 @@ describe('post entity', () => {
     expect(sut.type).toBe(props.type);
     expect(sut.authorId).toBe(props.authorId);
     expect(sut.referencedPost).toBe(referencedPost);
+    expect(sut.createdAt).toBeDefined();
     expect(quoteValidateSpy).toBeCalledTimes(1);
     expect(quoteValidateSpy).toBeCalledWith(referencedPost, props.message);
   });
@@ -65,6 +68,7 @@ describe('post entity', () => {
       id: new ID('123'),
       message: new Message('Referenced post message.'),
       authorId: new ID('abc'),
+      createdAt: new Date(),
       type: PostType.NORMAL,
     };
     const props = {
@@ -78,8 +82,20 @@ describe('post entity', () => {
     expect(sut.type).toBe(props.type);
     expect(sut.authorId).toBe(props.authorId);
     expect(sut.referencedPost).toBe(referencedPost);
+    expect(sut.createdAt).toBeDefined();
     expect(repostValidateSpy).toBeCalledTimes(1);
     expect(repostValidateSpy).toBeCalledWith(referencedPost, '');
+  });
+
+  it('should create a post when created at is provided', () => {
+    const props = {
+      type: PostType.NORMAL,
+      message: 'My post content',
+      authorId: 'abc',
+      createdAt: new Date(),
+    };
+    const sut = new PostEntity(props);
+    expect(sut.createdAt).toBe(props.createdAt);
   });
 
   it('should throw exceptions throwed by validator', () => {
