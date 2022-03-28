@@ -16,6 +16,7 @@ export class UserEntity {
   private readonly _followersCount: number;
   private readonly _followingCount: number;
   private readonly _postsCount: number;
+  private readonly _createdAt: Date;
 
   constructor(private readonly props: UserEntityProps) {
     this._username = new Username(props.username);
@@ -23,6 +24,7 @@ export class UserEntity {
     this._followersCount = props.followersCount || 0;
     this._followingCount = props.followingCount || 0;
     this._postsCount = props.postsCount || 0;
+    this._createdAt = props?.createdAt || new Date();
   }
 
   get username() {
@@ -47,5 +49,9 @@ export class UserEntity {
 
   get postsCount() {
     return this._postsCount;
+  }
+
+  get createAt() {
+    return this._createdAt;
   }
 }
