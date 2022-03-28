@@ -22,3 +22,7 @@ export interface FindMany<T> {
 export interface Create<T, D> {
   create(data: T): Promise<D>;
 }
+
+export interface Remove<T, D> {
+  remove(data: T): Promise<D>;
+}
