@@ -12,6 +12,7 @@ describe('quote post type', () => {
     id: new ID('123'),
     message: new Message('Referenced post message.'),
     type: PostType.NORMAL,
+    authorId: new ID('abc'),
     referencedPostId: new ID('321'),
   };
 

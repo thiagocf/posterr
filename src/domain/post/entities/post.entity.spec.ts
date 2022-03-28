@@ -24,12 +24,14 @@ describe('post entity', () => {
     const props = {
       type: PostType.NORMAL,
       message: 'My post content',
+      authorId: 'abc',
     };
     const sut = new PostEntity(props);
 
     expect(sut.id).toBeDefined();
     expect(sut.message).toBe(props.message);
     expect(sut.type).toBe(props.type);
+    expect(sut.authorId).toBe(props.authorId);
     expect(normalValidateSpy).toBeCalledTimes(1);
     expect(normalValidateSpy).toBeCalledWith(undefined, props.message);
   });
@@ -39,10 +41,12 @@ describe('post entity', () => {
       id: new ID('123'),
       message: new Message('Referenced post message.'),
       type: PostType.NORMAL,
+      authorId: new ID('abc'),
     };
     const props = {
       type: PostType.QUOTE,
       message: 'My post content',
+      authorId: 'abc',
       referencedPost,
     };
     const sut = new PostEntity(props);
@@ -50,6 +54,7 @@ describe('post entity', () => {
     expect(sut.id).toBeDefined();
     expect(sut.message).toBe(props.message);
     expect(sut.type).toBe(props.type);
+    expect(sut.authorId).toBe(props.authorId);
     expect(sut.referencedPost).toBe(referencedPost);
     expect(quoteValidateSpy).toBeCalledTimes(1);
     expect(quoteValidateSpy).toBeCalledWith(referencedPost, props.message);
@@ -59,16 +64,19 @@ describe('post entity', () => {
     const referencedPost: ReferencedPost = {
       id: new ID('123'),
       message: new Message('Referenced post message.'),
+      authorId: new ID('abc'),
       type: PostType.NORMAL,
     };
     const props = {
       type: PostType.REPOST,
+      authorId: 'abc',
       referencedPost,
     };
     const sut = new PostEntity(props);
 
     expect(sut.id).toBeDefined();
     expect(sut.type).toBe(props.type);
+    expect(sut.authorId).toBe(props.authorId);
     expect(sut.referencedPost).toBe(referencedPost);
     expect(repostValidateSpy).toBeCalledTimes(1);
     expect(repostValidateSpy).toBeCalledWith(referencedPost, '');
@@ -81,6 +89,7 @@ describe('post entity', () => {
     const props = {
       type: PostType.NORMAL,
       message: 'My post content',
+      authorId: 'abc',
     };
     expect(() => new PostEntity(props)).toThrow('test error');
   });
