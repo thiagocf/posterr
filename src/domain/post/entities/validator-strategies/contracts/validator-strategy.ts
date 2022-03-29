@@ -1,5 +1,6 @@
-import { ReferencedPost } from '../../post.entity';
+import { ID } from 'src/domain/base/value-objects/id';
+import { Message } from '../../value-objects/message';
 
 export interface ValidatorStrategy {
-  validate(referencedPost?: ReferencedPost, message?: string);
+  validate(referencedPostId?: ID, message?: Message);
 }

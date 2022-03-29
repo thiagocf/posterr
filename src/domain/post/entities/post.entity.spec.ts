@@ -34,22 +34,18 @@ describe('post entity', () => {
     expect(sut.authorId).toBe(props.authorId);
     expect(sut.createdAt).toBeDefined();
     expect(normalValidateSpy).toBeCalledTimes(1);
-    expect(normalValidateSpy).toBeCalledWith(undefined, props.message);
+    expect(normalValidateSpy).toBeCalledWith(
+      undefined,
+      new Message(props.message),
+    );
   });
 
   it('should create a quote post', () => {
-    const referencedPost: ReferencedPost = {
-      id: new ID('123'),
-      message: new Message('Referenced post message.'),
-      type: PostType.NORMAL,
-      createdAt: new Date(),
-      authorId: new ID('abc'),
-    };
     const props = {
       type: PostType.QUOTE,
       message: 'My post content',
       authorId: 'abc',
-      referencedPost,
+      referencedPostId: 'ppp',
     };
     const sut = new PostEntity(props);
 
@@ -57,34 +53,33 @@ describe('post entity', () => {
     expect(sut.message).toBe(props.message);
     expect(sut.type).toBe(props.type);
     expect(sut.authorId).toBe(props.authorId);
-    expect(sut.referencedPost).toBe(referencedPost);
+    expect(sut.referencedPostId).toBe(props.referencedPostId);
     expect(sut.createdAt).toBeDefined();
     expect(quoteValidateSpy).toBeCalledTimes(1);
-    expect(quoteValidateSpy).toBeCalledWith(referencedPost, props.message);
+    expect(quoteValidateSpy).toBeCalledWith(
+      new ID(props.referencedPostId),
+      new Message(props.message),
+    );
   });
 
   it('should create a repost post', () => {
-    const referencedPost: ReferencedPost = {
-      id: new ID('123'),
-      message: new Message('Referenced post message.'),
-      authorId: new ID('abc'),
-      createdAt: new Date(),
-      type: PostType.NORMAL,
-    };
     const props = {
       type: PostType.REPOST,
       authorId: 'abc',
-      referencedPost,
+      referencedPostId: 'ppp',
     };
     const sut = new PostEntity(props);
 
     expect(sut.id).toBeDefined();
     expect(sut.type).toBe(props.type);
     expect(sut.authorId).toBe(props.authorId);
-    expect(sut.referencedPost).toBe(referencedPost);
+    expect(sut.referencedPostId).toBe(props.referencedPostId);
     expect(sut.createdAt).toBeDefined();
     expect(repostValidateSpy).toBeCalledTimes(1);
-    expect(repostValidateSpy).toBeCalledWith(referencedPost, '');
+    expect(repostValidateSpy).toBeCalledWith(
+      new ID(props.referencedPostId),
+      new Message(),
+    );
   });
 
   it('should create a post when created at is provided', () => {

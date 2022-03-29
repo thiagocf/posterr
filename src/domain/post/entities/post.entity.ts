@@ -11,16 +11,16 @@ type PostEntityProps = {
   type: PostType;
   authorId: string;
   createdAt?: Date;
-  referencedPost?: ReferencedPost;
+  referencedPostId?: string;
 };
 
 export type ReferencedPost = {
-  id: ID;
-  message: Message;
+  id: string;
+  message: string;
   type: PostType;
-  authorId: ID;
+  authorId: string;
   createdAt: Date;
-  referencedPostId?: ID;
+  referencedPostId?: string;
 };
 
 const ValidatorStrategyMap = {
@@ -34,18 +34,20 @@ export class PostEntity {
   private readonly _type: PostType;
   private readonly _authorId: ID;
   private readonly _createdAt: Date;
-  private readonly _referencedPost: ReferencedPost;
+  private readonly _referencedPostId: ID;
 
   constructor(props: PostEntityProps) {
     this._id = new ID(props.id);
     this._message = new Message(props.message);
     this._type = props.type;
     this._authorId = new ID(props.authorId);
-    this._referencedPost = props.referencedPost;
     this._createdAt = props?.createdAt || new Date();
 
+    if (props.referencedPostId)
+      this._referencedPostId = new ID(props.referencedPostId);
+
     const validator = new ValidatorStrategyMap[props.type]();
-    validator.validate(props.referencedPost, this.message);
+    validator.validate(this._referencedPostId, this._message);
   }
 
   get id(): string {
@@ -64,8 +66,8 @@ export class PostEntity {
     return this._authorId.value;
   }
 
-  get referencedPost(): ReferencedPost {
-    return this._referencedPost;
+  get referencedPostId(): string {
+    return this._referencedPostId.value;
   }
 
   get createdAt(): Date {
