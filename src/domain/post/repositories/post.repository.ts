@@ -18,4 +18,8 @@ export interface FindManyPostsByAuthorRepository {
   ): Promise<FindManyResponse<PostEntity>>;
 }
 
+export interface CountPostsRepository {
+  countTodayPostsByAuthorId(authorId: string): number;
+}
+
 export type CreatePostRepository = Create<PostEntity, PostEntity>;
