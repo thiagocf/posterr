@@ -32,7 +32,7 @@ export class UserEntity {
   }
 
   get createdAt() {
-    return this.props.createdAt;
+    return this._createdAt;
   }
 
   get id() {
@@ -49,9 +49,5 @@ export class UserEntity {
 
   get postsCount() {
     return this._postsCount;
-  }
-
-  get createAt() {
-    return this._createdAt;
   }
 }
