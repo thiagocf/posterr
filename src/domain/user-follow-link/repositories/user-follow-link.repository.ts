@@ -11,7 +11,7 @@ export type CreateUserFollowLinkRepository = Create<
   UserFollowLinkEntity
 >;
 
-export type RemoveUserFollowLinkRepository = Remove<UserFollowLinkId, void>;
+export type RemoveUserFollowLinkRepository = Remove<UserFollowLinkId, boolean>;
 
 export interface FindOneUserFollowLinkRepository {
   findOneById(id: UserFollowLinkId): Promise<UserFollowLinkEntity>;
