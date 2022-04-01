@@ -14,10 +14,13 @@ export type FindManyPostsRepository = FindMany<PostEntity>;
 export interface FindManyPostsByAuthorRepository {
   findManyByAuthorIds(
     authorIds: string[],
-    pagination: PaginationParameters,
+    pagination?: PaginationParameters,
   ): Promise<FindManyResponse<PostEntity>>;
 }
 
+export interface FindPostsByIds {
+  findPostsByIds(ids: string[]): Promise<PostEntity[]>;
+}
 export interface CountPostsRepository {
   countTodayPostsByAuthorId(authorId: string): number;
 }

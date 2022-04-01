@@ -12,7 +12,7 @@ describe('user entity', () => {
     };
     const sut = new UserEntity(props);
     expect(sut.id).toBe(props.id);
-    expect(sut.createAt).toBe(props.createdAt);
+    expect(sut.createdAt).toBe(props.createdAt);
     expect(sut.username).toBe(props.username);
     expect(sut.followersCount).toBe(props.followersCount);
     expect(sut.followingCount).toBe(props.followingCount);
@@ -25,7 +25,7 @@ describe('user entity', () => {
     };
     const sut = new UserEntity(props);
     expect(sut.id).toBeDefined();
-    expect(sut.createAt).toBeDefined();
+    expect(sut.createdAt).toBeDefined();
     expect(sut.username).toBe(props.username);
     expect(sut.followersCount).toBe(0);
     expect(sut.followingCount).toBe(0);

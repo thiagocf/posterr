@@ -55,7 +55,7 @@ export class PostEntity {
   }
 
   get message(): string {
-    return this._message.value;
+    return this._message?.value;
   }
 
   get type(): PostType {
@@ -67,7 +67,7 @@ export class PostEntity {
   }
 
   get referencedPostId(): string {
-    return this._referencedPostId.value;
+    return this._referencedPostId?.value;
   }
 
   get createdAt(): Date {
