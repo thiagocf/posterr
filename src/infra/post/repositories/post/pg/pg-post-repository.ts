@@ -3,11 +3,15 @@ import { PostType } from 'src/domain/post/entities/post-type';
 import { PostEntity } from 'src/domain/post/entities/post.entity';
 import {
   FindManyPostsByAuthorRepository,
+  FindManyPostsRepository,
   FindPostsByIds,
 } from 'src/domain/post/repositories/post.repository';
 
 export class PgPostRepository
-  implements FindManyPostsByAuthorRepository, FindPostsByIds
+  implements
+    FindManyPostsByAuthorRepository,
+    FindPostsByIds,
+    FindManyPostsRepository
 {
   findPostsByIds(): Promise<PostEntity[]> {
     return Promise.resolve([
@@ -28,6 +32,10 @@ export class PgPostRepository
         referencedPostId: '312',
       }),
     ]);
+  }
+
+  findMany(): Promise<FindManyResponse<PostEntity>> {
+    return this.findManyByAuthorIds([]);
   }
 
   findManyByAuthorIds(
