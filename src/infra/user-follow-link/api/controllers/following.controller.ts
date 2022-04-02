@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import {
   CreateUserFollowLinkRepository,
@@ -13,10 +14,13 @@ import {
   RemoveUserFollowLinkRepository,
   USER_FOLLOW_LINK_REPOSITORY,
 } from 'src/domain/user-follow-link/repositories/user-follow-link.repository';
+import { FollowUserUseCase } from 'src/domain/user-follow-link/use-cases/follow-user.use-case';
+import { UnfollowUserUseCase } from 'src/domain/user-follow-link/use-cases/unfollow-user.use-case';
 import {
   AuthenticationService,
   AUTHENTICATION_SERVICE,
 } from 'src/infra/common/authentication/authentication-service';
+import { DomainExceptionFilter } from '../../filters/domain-exception.filter';
 
 type IsFollowingUserReponseDto = {
   isFollowing: boolean;
@@ -41,6 +45,7 @@ export class FollowingController {
   ) {}
 
   @Get('/:followingUserId')
+  @UseFilters(DomainExceptionFilter)
   async isFollowingUser(
     @Param('followingUserId') followingUserId: string,
   ): Promise<IsFollowingUserReponseDto> {
@@ -53,14 +58,16 @@ export class FollowingController {
   }
 
   @Post('/:toFollowUserId')
+  @UseFilters(DomainExceptionFilter)
   async follow(
     @Param('toFollowUserId') toFollowUserId: string,
   ): Promise<FollowResponseDto> {
     const userId = await this.authenticationService.getAuthenticatedUserId();
-    const followLink = await this.followingRepository.create({
+    const useCase = new FollowUserUseCase(this.followingRepository, {
+      toFollowUserId,
       userId,
-      followingUserId: toFollowUserId,
     });
+    const followLink = await useCase.execute();
     return {
       userId: followLink.userId,
       followingUserId: followLink.followingUserId,
@@ -69,13 +76,15 @@ export class FollowingController {
 
   @Delete('/:toUnfollowUserId')
   @HttpCode(204)
+  @UseFilters(DomainExceptionFilter)
   async unfollow(
     @Param('toUnfollowUserId') toUnfollowUserId: string,
   ): Promise<void> {
     const userId = await this.authenticationService.getAuthenticatedUserId();
-    await this.followingRepository.remove({
-      userId,
+    const useCase = new UnfollowUserUseCase(this.followingRepository, {
       followingUserId: toUnfollowUserId,
+      userId,
     });
+    await useCase.execute();
   }
 }
