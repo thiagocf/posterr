@@ -3,7 +3,7 @@ import { UserFollowLinkEntity } from '../entities/user-follow-link.entity';
 
 export const USER_FOLLOW_LINK_REPOSITORY = Symbol('UserFollowLinkRepository');
 
-type UserFollowLinkId = {
+export type UserFollowLinkId = {
   userId: string;
   followingUserId: string;
 };
@@ -20,5 +20,5 @@ export interface FindManyUserFollowLinkRepository {
 }
 
 export interface IsFollowingUserFollowLinkRepository {
-  isFollowing(userId: UserFollowLinkId): Promise<boolean>;
+  isFollowing(followLinkId: UserFollowLinkId): Promise<boolean>;
 }
