@@ -5,10 +5,10 @@ import { UserFollowLinkModule } from '../user-follow-link/user-follow-link.modul
 import { UserModule } from '../user/user.module';
 @Module({
   imports: [
+    TypeOrmModule.forRoot(),
     UserModule,
     PostModule,
     UserFollowLinkModule,
-    TypeOrmModule.forRoot(),
   ],
 })
 export class AppModule {}

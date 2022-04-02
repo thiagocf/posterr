@@ -1,6 +1,13 @@
 import { PostType } from 'src/domain/post/entities/post-type';
 import { User } from 'src/infra/user/db/entities/user.db-entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity()
 export class Post {
@@ -19,6 +26,7 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
 
-  @Column('varchar', { length: 14 })
-  username: string;
+  @OneToOne(() => Post)
+  @JoinColumn()
+  referencedPost: Post;
 }
