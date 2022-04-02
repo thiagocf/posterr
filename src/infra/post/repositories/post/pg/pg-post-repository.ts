@@ -2,8 +2,11 @@ import { FindManyResponse } from 'src/domain/base/repository-ports';
 import { PostType } from 'src/domain/post/entities/post-type';
 import { PostEntity } from 'src/domain/post/entities/post.entity';
 import {
+  CountPostsRepository,
+  CreatePostRepository,
   FindManyPostsByAuthorRepository,
   FindManyPostsRepository,
+  FindOneByIdPostRepository,
   FindPostsByIds,
 } from 'src/domain/post/repositories/post.repository';
 
@@ -11,8 +14,32 @@ export class PgPostRepository
   implements
     FindManyPostsByAuthorRepository,
     FindPostsByIds,
-    FindManyPostsRepository
+    FindManyPostsRepository,
+    CreatePostRepository,
+    CountPostsRepository,
+    FindOneByIdPostRepository
 {
+  create(post: PostEntity): Promise<PostEntity> {
+    return Promise.resolve(post);
+  }
+
+  countTodayPostsByAuthorId(authorId: string): number {
+    return 0;
+  }
+
+  findOneById(id: string): Promise<PostEntity> {
+    return Promise.resolve(
+      new PostEntity({
+        authorId: 'aaa',
+        type: PostType.QUOTE,
+        createdAt: new Date(),
+        id,
+        message: 'Test quote post',
+        referencedPostId: '311',
+      }),
+    );
+  }
+
   findPostsByIds(): Promise<PostEntity[]> {
     return Promise.resolve([
       new PostEntity({

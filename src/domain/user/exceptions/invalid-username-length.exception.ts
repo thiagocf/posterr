@@ -1,6 +1,6 @@
-import { BaseException } from 'src/domain/base/base-exception';
+import { BaseDomainException } from 'src/domain/base/base-domain-exception';
 
-export class InvalidUsernameLengthException extends BaseException {
+export class InvalidUsernameLengthException extends BaseDomainException {
   constructor() {
     super('Invalid username length.', 'InvalidUsernameLengthException');
   }

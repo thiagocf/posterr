@@ -46,7 +46,8 @@ export class PostEntity {
     if (props.referencedPostId)
       this._referencedPostId = new ID(props.referencedPostId);
 
-    const validator = new ValidatorStrategyMap[props.type]();
+    const Validator = ValidatorStrategyMap[props.type];
+    const validator = new Validator();
     validator.validate(this._referencedPostId, this._message);
   }
 

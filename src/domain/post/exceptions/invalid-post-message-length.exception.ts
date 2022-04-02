@@ -1,7 +1,8 @@
-import { BaseException } from 'src/domain/base/base-exception';
+import { BaseDomainException } from 'src/domain/base/base-domain-exception';
+import { INVALID_POST_MESSAGE_LENGTH_CODE } from './codes';
 
-export class InvalidPostMessageLengthException extends BaseException {
+export class InvalidPostMessageLengthException extends BaseDomainException {
   constructor() {
-    super('Invalid post message length.', 'InvalidPostMessageLengthException');
+    super('Invalid post message length.', INVALID_POST_MESSAGE_LENGTH_CODE);
   }
 }

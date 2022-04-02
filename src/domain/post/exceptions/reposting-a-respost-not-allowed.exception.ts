@@ -1,10 +1,11 @@
-import { BaseException } from 'src/domain/base/base-exception';
+import { BaseDomainException } from 'src/domain/base/base-domain-exception';
+import { REPOSTING_A_REPOST_NOT_ALLOWED_CODE } from './codes';
 
-export class RepostingARepostNotAllowedException extends BaseException {
+export class RepostingARepostNotAllowedException extends BaseDomainException {
   constructor() {
     super(
       'Reposting a respost is not allowed.',
-      'RepostingARepostNotAllowedException',
+      REPOSTING_A_REPOST_NOT_ALLOWED_CODE,
     );
   }
 }
