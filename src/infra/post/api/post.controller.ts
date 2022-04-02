@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -10,11 +9,6 @@ import {
 } from '@nestjs/common';
 import { FindManyResponse } from 'src/domain/base/repository-ports';
 import { PostEntity } from 'src/domain/post/entities/post.entity';
-import { EmptyPostMessageException } from 'src/domain/post/exceptions/empty-post-message.exception';
-import { InvalidPostMessageLengthException } from 'src/domain/post/exceptions/invalid-post-message-length.exception';
-import { ReferencedPostNotFoundException } from 'src/domain/post/exceptions/referenced-post-not-found.exception';
-import { RepostMessageIsNotAllowedException } from 'src/domain/post/exceptions/repost-message-is-not-allowed.exception copy';
-import { RepostingARepostNotAllowedException } from 'src/domain/post/exceptions/reposting-a-respost-not-allowed.exception';
 import {
   CountPostsRepository,
   CreatePostRepository,
@@ -35,7 +29,7 @@ import {
 import { POST_REPOSITORY } from '../repositories/post/constants';
 import { CreatePostDto } from './dtos/create-post-parameters.dto';
 import { PostDto } from './dtos/post.dto';
-import { DomainExceptionFilter } from './filters/domain-exception.filter';
+import { PostDomainExceptionFilter } from './filters/post-domain-exception.filter';
 import { loadReferencedPostsMap } from './utils/load-referenced-posts-map';
 
 type PaginationDto = {
@@ -92,7 +86,7 @@ export class PostController {
   }
 
   @Post()
-  @UseFilters(DomainExceptionFilter)
+  @UseFilters(PostDomainExceptionFilter)
   async create(@Body() body: CreatePostDto): Promise<PostDto> {
     const authorId = await this.authenticationService.getAuthenticatedUserId();
     const useCase = new CreatePostUseCase(this.postRepository, {

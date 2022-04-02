@@ -20,7 +20,7 @@ import {
   AuthenticationService,
   AUTHENTICATION_SERVICE,
 } from 'src/infra/common/authentication/authentication-service';
-import { DomainExceptionFilter } from '../../filters/domain-exception.filter';
+import { UserFollowLinkDomainExceptionFilter } from '../../filters/user-follow-link-domain-exception.filter';
 
 type IsFollowingUserReponseDto = {
   isFollowing: boolean;
@@ -45,7 +45,7 @@ export class FollowingController {
   ) {}
 
   @Get('/:followingUserId')
-  @UseFilters(DomainExceptionFilter)
+  @UseFilters(UserFollowLinkDomainExceptionFilter)
   async isFollowingUser(
     @Param('followingUserId') followingUserId: string,
   ): Promise<IsFollowingUserReponseDto> {
@@ -58,7 +58,7 @@ export class FollowingController {
   }
 
   @Post('/:toFollowUserId')
-  @UseFilters(DomainExceptionFilter)
+  @UseFilters(UserFollowLinkDomainExceptionFilter)
   async follow(
     @Param('toFollowUserId') toFollowUserId: string,
   ): Promise<FollowResponseDto> {
@@ -76,7 +76,7 @@ export class FollowingController {
 
   @Delete('/:toUnfollowUserId')
   @HttpCode(204)
-  @UseFilters(DomainExceptionFilter)
+  @UseFilters(UserFollowLinkDomainExceptionFilter)
   async unfollow(
     @Param('toUnfollowUserId') toUnfollowUserId: string,
   ): Promise<void> {

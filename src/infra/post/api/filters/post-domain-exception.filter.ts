@@ -1,12 +1,7 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpStatus,
-} from '@nestjs/common';
-import { Response } from 'express';
+import { Catch, HttpStatus } from '@nestjs/common';
 import { BaseDomainException } from 'src/domain/base/base-domain-exception';
 import * as PostExceptionCode from 'src/domain/post/exceptions/codes';
+import { DomainExceptionFilter } from 'src/infra/common/filters/domain-exception.filter';
 
 const BAD_REQUEST_EXCEPTION_CODES = [
   PostExceptionCode.EMPTY_POST_MESSAGE_CODE,
@@ -18,19 +13,12 @@ const BAD_REQUEST_EXCEPTION_CODES = [
 ];
 
 @Catch(BaseDomainException)
-export class DomainExceptionFilter implements ExceptionFilter {
-  catch(exception: BaseDomainException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-
+export class PostDomainExceptionFilter extends DomainExceptionFilter {
+  getStatus(exception: BaseDomainException): HttpStatus {
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     if (BAD_REQUEST_EXCEPTION_CODES.includes(exception.code)) {
       status = HttpStatus.BAD_REQUEST;
     }
-
-    response.status(status).json({
-      code: exception.code,
-      message: exception.message,
-    });
+    return status;
   }
 }
