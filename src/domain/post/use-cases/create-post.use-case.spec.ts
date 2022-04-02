@@ -44,7 +44,6 @@ describe('create post use case', () => {
     const POST_PROPS = {
       type: PostType.REPOST,
       authorId: 'abc',
-      message: 'Test message',
       referencedPostId: 'ppp',
     };
     const RESPONSE_POST = new PostEntity(POST_PROPS);
@@ -69,7 +68,6 @@ describe('create post use case', () => {
     const POST_PROPS = {
       type: PostType.REPOST,
       authorId: 'abc',
-      message: 'Test message',
       referencedPostId: 'ppp',
     };
     const RESPONSE_POST = new PostEntity(POST_PROPS);
@@ -78,7 +76,6 @@ describe('create post use case', () => {
     const REF_POST_PROPS = {
       type: PostType.REPOST,
       authorId: 'abc',
-      message: 'Test message',
       referencedPostId: 'qqq',
     };
     const REFERENCED_POST = new PostEntity(REF_POST_PROPS);

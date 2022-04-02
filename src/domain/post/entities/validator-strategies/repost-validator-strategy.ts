@@ -10,7 +10,7 @@ export class RepostValidatorStrategy implements ValidatorStrategy {
       throw new ReferencedPostNotFoundException();
     }
 
-    if (message.value) {
+    if (message && message.value) {
       throw new RepostMessageIsNotAllowedException();
     }
   }
