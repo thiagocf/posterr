@@ -1,5 +1,6 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import {
+  CreateUserFollowLinkRepository,
   IsFollowingUserFollowLinkRepository,
   USER_FOLLOW_LINK_REPOSITORY,
 } from 'src/domain/user-follow-link/repositories/user-follow-link.repository';
@@ -12,13 +13,21 @@ type IsFollowingUserReponseDto = {
   isFollowing: boolean;
 };
 
+type FollowResponseDto = {
+  userId: string;
+  followingUserId: string;
+};
+
+type FollowingRepository = IsFollowingUserFollowLinkRepository &
+  CreateUserFollowLinkRepository;
+
 @Controller('following')
 export class FollowingController {
   constructor(
     @Inject(AUTHENTICATION_SERVICE)
     private readonly authenticationService: AuthenticationService,
     @Inject(USER_FOLLOW_LINK_REPOSITORY)
-    private readonly followingRepository: IsFollowingUserFollowLinkRepository,
+    private readonly followingRepository: FollowingRepository,
   ) {}
 
   @Get('/:followingUserId')
@@ -31,5 +40,20 @@ export class FollowingController {
       followingUserId,
     });
     return { isFollowing };
+  }
+
+  @Post('/:toFollowUserId')
+  async follow(
+    @Param('toFollowUserId') toFollowUserId: string,
+  ): Promise<FollowResponseDto> {
+    const userId = await this.authenticationService.getAuthenticatedUserId();
+    const followLink = await this.followingRepository.create({
+      userId,
+      followingUserId: toFollowUserId,
+    });
+    return {
+      userId: followLink.userId,
+      followingUserId: followLink.followingUserId,
+    };
   }
 }
