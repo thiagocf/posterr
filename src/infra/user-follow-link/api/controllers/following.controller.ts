@@ -1,7 +1,16 @@
-import { Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Inject,
+  Param,
+  Post,
+} from '@nestjs/common';
 import {
   CreateUserFollowLinkRepository,
   IsFollowingUserFollowLinkRepository,
+  RemoveUserFollowLinkRepository,
   USER_FOLLOW_LINK_REPOSITORY,
 } from 'src/domain/user-follow-link/repositories/user-follow-link.repository';
 import {
@@ -19,7 +28,8 @@ type FollowResponseDto = {
 };
 
 type FollowingRepository = IsFollowingUserFollowLinkRepository &
-  CreateUserFollowLinkRepository;
+  CreateUserFollowLinkRepository &
+  RemoveUserFollowLinkRepository;
 
 @Controller('following')
 export class FollowingController {
@@ -55,5 +65,17 @@ export class FollowingController {
       userId: followLink.userId,
       followingUserId: followLink.followingUserId,
     };
+  }
+
+  @Delete('/:toUnfollowUserId')
+  @HttpCode(204)
+  async unfollow(
+    @Param('toUnfollowUserId') toUnfollowUserId: string,
+  ): Promise<void> {
+    const userId = await this.authenticationService.getAuthenticatedUserId();
+    await this.followingRepository.remove({
+      userId,
+      followingUserId: toUnfollowUserId,
+    });
   }
 }

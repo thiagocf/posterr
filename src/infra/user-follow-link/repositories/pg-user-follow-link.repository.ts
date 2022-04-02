@@ -3,6 +3,7 @@ import {
   CreateUserFollowLinkRepository,
   FindManyUserFollowLinkRepository,
   IsFollowingUserFollowLinkRepository,
+  RemoveUserFollowLinkRepository,
   UserFollowLinkId,
 } from 'src/domain/user-follow-link/repositories/user-follow-link.repository';
 import * as crypto from 'crypto';
@@ -11,8 +12,13 @@ export class PgUserFollowLinkRepository
   implements
     FindManyUserFollowLinkRepository,
     IsFollowingUserFollowLinkRepository,
-    CreateUserFollowLinkRepository
+    CreateUserFollowLinkRepository,
+    RemoveUserFollowLinkRepository
 {
+  remove(data: UserFollowLinkId): Promise<boolean> {
+    return Promise.resolve(true);
+  }
+
   create(data: UserFollowLinkId): Promise<UserFollowLinkEntity> {
     return Promise.resolve(new UserFollowLinkEntity(data));
   }
