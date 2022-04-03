@@ -33,7 +33,7 @@ import { PostDomainExceptionFilter } from './filters/post-domain-exception.filte
 import { loadReferencedPostsMap } from './utils/load-referenced-posts-map';
 
 type PaginationDto = {
-  nextCursor: string;
+  nextToken: string;
 };
 
 type FindManyResponseDto = {
@@ -62,10 +62,10 @@ export class PostController {
   @Get()
   async findMany(
     @Query('next_token') nextToken: string,
-    @Query('count') count = 10,
+    @Query('count') count = '10',
     @Query('followed_only') followedOnly = false,
   ): Promise<FindManyResponseDto> {
-    const paginationParameters = { nextToken, count };
+    const paginationParameters = { nextToken, count: parseInt(count) };
     const findResponse = followedOnly
       ? await this.loadFollowedByUserPosts(paginationParameters)
       : await this.loadAllPosts(paginationParameters);

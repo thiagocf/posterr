@@ -23,6 +23,18 @@ export class Post {
   })
   type: PostType;
 
+  @Column('timestamp')
+  createdAt: Date;
+
+  @Column('varchar', { length: 60, unique: true })
+  dateIdCursor: string;
+
+  @Column('uuid')
+  authorId: string;
+
+  @Column('uuid', { nullable: true })
+  referencedPostId: string;
+
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
 

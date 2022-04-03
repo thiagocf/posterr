@@ -22,7 +22,7 @@ export interface FindPostsByIds {
   findPostsByIds(ids: string[]): Promise<PostEntity[]>;
 }
 export interface CountPostsRepository {
-  countTodayPostsByAuthorId(authorId: string): number;
+  countTodayPostsByAuthorId(authorId: string): Promise<number>;
 }
 
 export type CreatePostRepository = Create<PostEntity, PostEntity>;

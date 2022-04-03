@@ -3,12 +3,12 @@ export interface FindOneById<I, T> {
 }
 
 export type PaginationParameters = {
-  nextCursor?: string;
+  nextToken?: string;
   count: number;
 };
 
 export type PaginationResponse = {
-  nextCursor: string;
+  nextToken: string;
 };
 
 export type FindManyResponse<T> = {

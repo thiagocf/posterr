@@ -4,7 +4,7 @@ import { UserFollowLinkModule } from '../user-follow-link/user-follow-link.modul
 import { PostController } from './api/post.controller';
 import { UserPostController } from './api/user-post.controller';
 import { POST_REPOSITORY } from './repositories/post/constants';
-import { PgPostRepository } from './repositories/post/pg/pg-post-repository';
+import { TypeormPostRepository } from './repositories/post/typeorm/typeorm-post-repository';
 
 @Module({
   imports: [AuthenticationModule, UserFollowLinkModule],
@@ -12,7 +12,7 @@ import { PgPostRepository } from './repositories/post/pg/pg-post-repository';
   providers: [
     {
       provide: POST_REPOSITORY,
-      useClass: PgPostRepository,
+      useClass: TypeormPostRepository,
     },
   ],
 })

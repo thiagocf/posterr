@@ -10,7 +10,7 @@ import {
   FindPostsByIds,
 } from 'src/domain/post/repositories/post.repository';
 
-export class PgPostRepository
+export class MockPostRepository
   implements
     FindManyPostsByAuthorRepository,
     FindPostsByIds,
@@ -23,8 +23,8 @@ export class PgPostRepository
     return Promise.resolve(post);
   }
 
-  countTodayPostsByAuthorId(authorId: string): number {
-    return 0;
+  countTodayPostsByAuthorId(): Promise<number> {
+    return Promise.resolve(0);
   }
 
   findOneById(id: string): Promise<PostEntity> {
@@ -96,7 +96,7 @@ export class PgPostRepository
     return Promise.resolve({
       data,
       pagination: {
-        nextCursor: Buffer.from('abcd').toString('base64'),
+        nextToken: Buffer.from('abcd').toString('base64'),
       },
     });
   }

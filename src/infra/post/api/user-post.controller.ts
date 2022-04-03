@@ -8,7 +8,7 @@ import { PostDto } from './dtos/post.dto';
 import { loadReferencedPostsMap } from './utils/load-referenced-posts-map';
 
 type PaginationDto = {
-  nextCursor: string;
+  nextToken: string;
 };
 
 type FindManyResponseDto = {
@@ -29,9 +29,9 @@ export class UserPostController {
   async findMany(
     @Param('userId') userId: string,
     @Query('next_token') nextToken: string,
-    @Query('count') count = 5,
+    @Query('count') count = '5',
   ): Promise<FindManyResponseDto> {
-    const paginationParameters = { nextToken, count };
+    const paginationParameters = { nextToken, count: parseInt(count) };
     const { data, pagination } = await this.postRepository.findManyByAuthorIds(
       [userId],
       paginationParameters,
