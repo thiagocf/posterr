@@ -8,14 +8,14 @@ import {
 } from 'src/domain/user-follow-link/repositories/user-follow-link.repository';
 import * as crypto from 'crypto';
 
-export class PgUserFollowLinkRepository
+export class MockUserFollowLinkRepository
   implements
     FindManyUserFollowLinkRepository,
     IsFollowingUserFollowLinkRepository,
     CreateUserFollowLinkRepository,
     RemoveUserFollowLinkRepository
 {
-  remove(data: UserFollowLinkId): Promise<boolean> {
+  remove(): Promise<boolean> {
     return Promise.resolve(true);
   }
 

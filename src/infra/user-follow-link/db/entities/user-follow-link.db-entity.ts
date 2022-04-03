@@ -1,5 +1,11 @@
 import { User } from 'src/infra/user/db/entities/user.db-entity';
-import { Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @Index(['followerUser', 'followingUser'], { unique: true })
@@ -12,4 +18,10 @@ export class UserFollowLink {
 
   @ManyToOne(() => User, (user) => user.following)
   followingUser: User;
+
+  @Column('uuid')
+  followerUserId: string;
+
+  @Column('uuid')
+  followingUserId: string;
 }
