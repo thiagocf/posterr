@@ -18,7 +18,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js --config src/infra/app/db/orm.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
@@ -51,7 +52,8 @@
     "ts-jest": "^26.5.4",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
-    "tsconfig-paths": "^3.9.0",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.14.1",
     "typescript": "^4.2.3"
   },
   "jest": {
