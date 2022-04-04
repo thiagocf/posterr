@@ -17,6 +17,7 @@ export class TypeormUserRepository implements FindOneByIdUserRepository {
       .loadRelationCountAndMap('user.postsCount', 'user.posts')
       .getOne();
 
+    if (!user) return;
     return new UserEntity(user);
   }
 }
