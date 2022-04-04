@@ -1,13 +1,6 @@
 import { PostType } from 'src/domain/post/entities/post-type';
 import { User } from 'src/infra/user/db/entities/user.db-entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Post {
@@ -38,7 +31,9 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
 
-  @OneToOne(() => Post)
-  @JoinColumn()
+  @ManyToOne(() => Post, (post) => post.referencedByPosts)
   referencedPost: Post;
+
+  @OneToMany(() => Post, (post) => post.referencedPost)
+  referencedByPosts: Post[];
 }

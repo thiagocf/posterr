@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class seeds1649069476824 implements MigrationInterface {
+export class seeds1649086390446 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `INSERT INTO "user" (id, "createdAt", username) VALUES('ea38bc9b-b770-4848-a736-9d44d5841641'::uuid, '2022-04-04 10:33:47.470', 'user1')`,
@@ -36,14 +36,6 @@ export class seeds1649069476824 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DELETE FROM "user" WHERE id='ea38bc9b-b770-4848-a736-9d44d5841641'::uuid`,
-    );
-
-    await queryRunner.query(
-      `DELETE FROM "user" WHERE id='f528b4d5-f6a1-408e-bb2c-9e2a90363233'::uuid`,
-    );
-
-    await queryRunner.query(
       `DELETE FROM post WHERE id='31068b45-1d63-4961-b61b-20481e815700'::uuid`,
     );
 
@@ -65,6 +57,14 @@ export class seeds1649069476824 implements MigrationInterface {
 
     await queryRunner.query(
       `DELETE FROM post WHERE id='31068b45-1d63-4961-b61b-20481e815705'::uuid`,
+    );
+
+    await queryRunner.query(
+      `DELETE FROM "user" WHERE id='ea38bc9b-b770-4848-a736-9d44d5841641'::uuid`,
+    );
+
+    await queryRunner.query(
+      `DELETE FROM "user" WHERE id='f528b4d5-f6a1-408e-bb2c-9e2a90363233'::uuid`,
     );
   }
 }
