@@ -1,73 +1,79 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
+Posterr is a twitter like service. 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
-
+## Prerequisites
+- [Docker](https://docs.docker.com/engine/install/)
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker compose up --build -d
 ```
+(It may take sometime to prepare everything)
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ docker compose exec posterr-api yarn test
 ```
 
-## Support
+## Preloaded data
+The database was preloaded with some data for easy running some requests against the API.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Users
+- user1: 
+  - Hardcoded authenticated user
+- user2: 
+  - Created to test follow and unfollow features.
+  - id: f528b4d5-f6a1-408e-bb2c-9e2a90363233
 
-## Stay in touch
+### Posts
+There are 6 posts created by 'user2'.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## API Documentation
+[Postman docs](https://documenter.getpostman.com/view/10140489/UVysywQ4)
+(Please check the examples.)
 
-## License
+## Planning
+### Questions
+1. Has the reply the same characters limit (777) as a post?
+2. Is there a limit amount of replies to a tweet?
+3. Should it be possible to reply a reply?
+4. A reply to a repost should reference the original post or the repost?
+5. Replies can be reposted? And Quoted?
 
-Nest is [MIT licensed](LICENSE).
+### Implementation
+Assumptions:
+- Reply has max 777 characters
+- unlimited replies
+- it is possible to reply a reply
+- a reply to a repost should reference the original post.
+- replies can be reposted and quoted.
+
+Solution:
+Add support to the REPLY post type and include a parameter to the list posts API to filter out the replies.
+
+Tech details:
+- create Post API should support the REPLY type
+- On Post table, the type collumn should support the REPLY type.
+- list Posts API should support the query string option: include_replies as boolean type.
+- Post repository find many method should support the includeReplies parameter. When the parameter is false a where constrain must filter out the REPLY posts.
+- Post entity should include support for REPLY type.
+- should be created a validation strategy por REPLY post to check if user is replying a REPOST and throwing an error.
+
+## Critique
+### Improvements:
+- improve unit tests coverage
+- create e2e tests
+- improve exception handling and return messages
+- include proper authentication and authorization
+
+### Scale:
+- The API service must be run on a cluster, like kubernetes, so the number of instances can increase according to the services load. Also,
+there should be a load balance to distribute the requests to the 
+avaiable instances.
+- Requests rate limits and throttle must be addressed to avoid abuses.
+- Analytics and monitoring services should be configured.
+- The database should be configured with reading replicas and being monitored to auto scale.
+- Postgres default engine is know to have a limit of storage maintaining a desired performance. For extreme cases, other big data
+solutions must be used. Those solutions focus on optimizing indexes and partioning to keep the performance.
