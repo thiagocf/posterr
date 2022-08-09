@@ -22,11 +22,11 @@
     "typeorm": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js --config src/infra/app/db/orm.config.ts"
   },
   "dependencies": {
-    "@nestjs/common": "^7.6.15",
-    "@nestjs/config": "^2.0.0",
-    "@nestjs/core": "^7.6.15",
-    "@nestjs/platform-express": "^7.6.15",
-    "@nestjs/typeorm": "^8.0.3",
+    "@nestjs/common": "7.6.15",
+    "@nestjs/config": "2.0.0",
+    "@nestjs/core": "7.6.15",
+    "@nestjs/platform-express": "7.6.15",
+    "@nestjs/typeorm": "8.0.3",
     "class-validator": "^0.13.2",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
